@@ -1,0 +1,27 @@
+PODS:
+  - Nimble (7.3.4)
+  - PGRequest (0.1.0)
+  - Quick (1.2.0)
+
+DEPENDENCIES:
+  - Nimble (~> 7.0)
+  - PGRequest (from `../`)
+  - Quick (~> 1.2.0)
+
+SPEC REPOS:
+  trunk:
+    - Nimble
+    - Quick
+
+EXTERNAL SOURCES:
+  PGRequest:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  Nimble: 051e3d8912d40138fa5591c78594f95fb172af37
+  PGRequest: 9eb5c8ca795e2863fc2ba3932dd780b58478f0e8
+  Quick: 58d203b1c5e27fff7229c4c1ae445ad7069a7a08
+
+PODFILE CHECKSUM: 2d7beff5a9fbd98013ee16fa0913a3d5db2b6d6a
+
+COCOAPODS: 1.8.4

@@ -1,0 +1,6 @@
+framework module PGRequest {
+  umbrella header "PGRequest-umbrella.h"
+
+  export *
+  module * { export * }
+}
