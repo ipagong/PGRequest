@@ -1,27 +1,40 @@
 PODS:
-  - Nimble (7.3.4)
-  - PGRequest (0.1.0)
-  - Quick (1.2.0)
+  - Alamofire (5.0.3)
+  - PGRequest (0.5.0):
+    - Alamofire (~> 5.0)
+    - RxCocoa (~> 5.0)
+    - RxSwift (~> 5.0)
+  - RxCocoa (5.1.0):
+    - RxRelay (~> 5)
+    - RxSwift (~> 5)
+  - RxRelay (5.1.0):
+    - RxSwift (~> 5)
+  - RxSwift (5.1.0)
 
 DEPENDENCIES:
-  - Nimble (~> 7.0)
+  - Alamofire (~> 5.0)
   - PGRequest (from `../`)
-  - Quick (~> 1.2.0)
+  - RxCocoa (~> 5.0)
+  - RxSwift (~> 5.0)
 
 SPEC REPOS:
   trunk:
-    - Nimble
-    - Quick
+    - Alamofire
+    - RxCocoa
+    - RxRelay
+    - RxSwift
 
 EXTERNAL SOURCES:
   PGRequest:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Nimble: 051e3d8912d40138fa5591c78594f95fb172af37
-  PGRequest: 9eb5c8ca795e2863fc2ba3932dd780b58478f0e8
-  Quick: 58d203b1c5e27fff7229c4c1ae445ad7069a7a08
+  Alamofire: 7c444099d8ccb6ae7e6fc8f343646d3821d8679b
+  PGRequest: 914d74baa09971c7f69bf4efc13361387e87f0fa
+  RxCocoa: 13d2a4d7546a34b8ececae8c281e4ea1dbb94f2b
+  RxRelay: a168bd6caf712d00c676ac344e9295afc93b418e
+  RxSwift: ad5874f24bb0dbffd1e9bb8443604e3578796c7a
 
-PODFILE CHECKSUM: 2d7beff5a9fbd98013ee16fa0913a3d5db2b6d6a
+PODFILE CHECKSUM: 3b362261cdf11345914d84c7ba2149abe6edb43e
 
 COCOAPODS: 1.8.4
