@@ -47,22 +47,17 @@ extension APIUploadConfig {
             APILog("<------------------------------->")
             APILog("\n")
             
-            var request:DataRequest?
-            
-            Self.domainConfig.manager.upload(multipartFormData: self.multiPartFormData(),
-                                             usingThreshold: SessionManager.multipartFormDataEncodingMemoryThreshold,
-                                             to: self.fullPath,
-                                             method: self.method,
-                                             headers: self.fullHeaders) { result in
-                                                switch result {
-                                                case .success(let upload, _, _):
-                                                    request = upload.validate().responseData(completionHandler: self.responseHandler(observer))
-                                                    
-                                                case .failure(let error):
-                                                    observer.onError(APIError<ServiceError>.init(code: .common(.malformedRequest), message: error.localizedDescription))
-                                                }}
-            
-            return Disposables.create { request?.cancel() }
+            let request = Self.domainConfig.manager.upload(multipartFormData: self.multiPartFormData(),
+                                                           to: self.fullPath,
+                                                           usingThreshold: MultipartFormData.encodingMemoryThreshold,
+                                                           method: self.method,
+                                                           headers: HTTPHeaders(self.fullHeaders))
+                
+            request
+                .validate()
+                .responseData(completionHandler: self.responseHandler(observer))
+
+            return Disposables.create { request.cancel() }
         }
     }
 }

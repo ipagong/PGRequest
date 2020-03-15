@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import SwiftyJSON
 
 protocol ServiceErrorable : Codable {
     associatedtype Code : ServiceErrorCodeRawPresentable

@@ -28,7 +28,7 @@ extension APIConfig {
                                                             method: self.method,
                                                             parameters: self.fullParamaters,
                                                             encoding: self.encoding,
-                                                            headers: self.fullHeaders)
+                                                            headers: HTTPHeaders(self.fullHeaders))
             
             request
                 .validate()
@@ -40,8 +40,8 @@ extension APIConfig {
 }
 
 extension APIConfig {
-    internal func responseHandler(_ observer: AnyObserver<Self.Response>) -> ((DataResponse<Data>) -> Void) {
-        return { (response:DataResponse<Data>) -> Void in
+    internal func responseHandler(_ observer: AnyObserver<Self.Response>) -> ((AFDataResponse<Data>) -> Void) {
+        return { (response:AFDataResponse<Data>) -> Void in
             switch response.result {
             case .success(let data):
                 do {
@@ -70,7 +70,7 @@ extension APIConfig {
         }
     }
     
-    private func failHandler(error:Error, response:DataResponse<Data>) -> APIError<ServiceError> {
+    private func failHandler(error:Error, response:AFDataResponse<Data>) -> APIError<ServiceError> {
         guard error.isCanceled == false else {
             return APIError.init(code: .common(.opertaionCanceled))
         }

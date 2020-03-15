@@ -31,7 +31,7 @@ protocol APIConfig {
 protocol DomainConfig {
     static var defaultHeader: [String: String]? { get }
     static var parameters : [String: Any?]? { get }
-    static var manager: Alamofire.SessionManager { get }
+    static var manager: Alamofire.Session { get }
     static var domain : String { get }
 }
 

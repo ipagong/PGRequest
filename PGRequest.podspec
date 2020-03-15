@@ -20,7 +20,7 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '10.0'
 
   s.source_files = 'PGRequest/Classes/**/*'
-  
+  s.swift_versions = ['5.0']
   s.dependency 'Alamofire',   '~> 5.0'
   s.dependency 'RxCocoa',     '~> 5.0'
   s.dependency 'RxSwift',     '~> 5.0'

@@ -19,6 +19,9 @@
     "ios": "10.0"
   },
   "source_files": "PGRequest/Classes/**/*",
+  "swift_versions": [
+    "5.0"
+  ],
   "dependencies": {
     "Alamofire": [
       "~> 5.0"
@@ -29,5 +32,6 @@
     "RxSwift": [
       "~> 5.0"
     ]
-  }
+  },
+  "swift_version": "5.0"
 }
