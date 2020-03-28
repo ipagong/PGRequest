@@ -9,7 +9,7 @@
 import Foundation
 
 extension API {
-    enum Parameter {
+    public enum Parameter {
         case map([String: Any?]?)
         case body(Encodable)
     }
@@ -38,20 +38,25 @@ extension Encodable {
     }
 }
 
+#if DEBUG
+public var needPrintAPILog = true
+#else
+public var needPrintAPILog = false
+#endif
+
 func APILog(_ message:String) {
-    #if DEBUG
+    guard needPrintAPILog == true else { return }
     print(message)
-    #endif
 }
 
 extension Data {
-    func parse<Element:Decodable>(keyStrategy strategy: JSONDecoder.KeyDecodingStrategy = .useDefaultKeys) throws -> Element {
+    public func parse<Element:Decodable>(keyStrategy strategy: JSONDecoder.KeyDecodingStrategy = .useDefaultKeys) throws -> Element {
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = strategy
         return try decoder.decode(Element.self, from: self)
     }
     
-    func parseList<Element:Decodable>(keyStrategy strategy: JSONDecoder.KeyDecodingStrategy = .useDefaultKeys) throws -> [Element] {
+    public func parseList<Element:Decodable>(keyStrategy strategy: JSONDecoder.KeyDecodingStrategy = .useDefaultKeys) throws -> [Element] {
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = strategy
         
@@ -63,7 +68,7 @@ extension Data {
 import SwiftyJSON
 
 extension Data {
-    func transformToJSON(key:String? = nil) throws -> JSON {
+    public func transformToJSON(key:String? = nil) throws -> JSON {
         return try {
             if self.isEmpty { return JSON(()) }
             let value = try JSON(data: self)
@@ -71,7 +76,7 @@ extension Data {
         }()
     }
     
-    func parse<V>(_ closure: ((JSON) throws -> V)) rethrows -> V {
+    public func parse<V>(_ closure: ((JSON) throws -> V)) rethrows -> V {
         let json = try! self.transformToJSON()
         return try closure(json)
     }

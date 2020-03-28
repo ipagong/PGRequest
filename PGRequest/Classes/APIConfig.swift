@@ -9,12 +9,12 @@ import Foundation
 import Alamofire
 import RxSwift
 
-struct API { }
+public struct API { }
 
-protocol APIConfig {
+public protocol APIConfig {
     associatedtype Response
-    associatedtype ServerConfig : DomainConfig
-    associatedtype ServiceError : ServiceErrorable
+    associatedtype ServerConfig: DomainConfig
+    associatedtype ServiceError: ServiceErrorable
     
     static var domainConfig: ServerConfig.Type { get }
     static var serviceError: ServiceError.Type { get }
@@ -22,21 +22,34 @@ protocol APIConfig {
     var path: String { get }
     var method: Alamofire.HTTPMethod { get }
     var parameters: API.Parameter? { get }
-    var encoding:ParameterEncoding { get }
+    var encoding: ParameterEncoding { get }
     
     func parse(_: Data) throws -> Response
     func makeRequest() -> Observable<Self.Response>
 }
 
-protocol DomainConfig {
+public protocol DomainConfig {
     static var defaultHeader: [String: String]? { get }
-    static var parameters : [String: Any?]? { get }
+    static var parameters: [String: Any?]? { get }
     static var manager: Alamofire.Session { get }
-    static var domain : String { get }
+    static var domain: String { get }
 }
 
-protocol APISpecifiedHeaderConfig {
-    var headers: [String : String]? { get }
+public protocol APISpecifiedHeaderConfig {
+    var headers: [String: String]? { get }
+}
+
+extension APIConfig {
+    public func request() -> Observable<Self.Response> {
+        return self.makeRequest()
+            .globalException(self)
+            .do(onError: { (error) in
+                if self is APIErrorIgnorable { return }
+                #if DEBUG
+                (error as? APIError<ServiceError>)?.showMessagePopup()
+                #endif
+            })
+    }
 }
 
 extension APIConfig {
@@ -56,23 +69,15 @@ extension APIConfig {
         return (self.parameters?.params ?? [:])
             .reduce(into: (Self.domainConfig.parameters ?? [:]).compactMapValues{$0}) { (result, element) in result[element.key] = element.value }
     }
-    
-    func request() -> Observable<Self.Response> {
-        return self.makeRequest()
-            .globalException(self)
-            .do(onError: { (error) in
-                if self is APIErrorIgnorable { return }
-                #if DEBUG
-                (error as? APIError<ServiceError>)?.showMessagePopup()
-                #endif
-            })
-    }
 }
 
 extension APIConfig {
-    var encoding:ParameterEncoding {
-        if self.method == .get { return URLEncoding.default }
-        
-        return JSONEncoding.default
+    var encoding: ParameterEncoding {
+        switch self.method {
+        case .get:
+            return URLEncoding.default
+        default:
+            return JSONEncoding.default
+        }
     }
 }

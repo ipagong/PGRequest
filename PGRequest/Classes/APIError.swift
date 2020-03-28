@@ -7,30 +7,30 @@
 
 import Foundation
 
-protocol ServiceErrorable : Codable {
-    associatedtype Code : ServiceErrorCodeRawPresentable
-    var code   : Code     { get }
+public protocol ServiceErrorable: Codable {
+    associatedtype Code: ServiceErrorCodeRawPresentable
+    var code: Code     { get }
     var message: String? { get }
     
     static func globalExeception() -> Bool
 }
 
-protocol ServiceErrorCodeRawPresentable : Codable {
+public protocol ServiceErrorCodeRawPresentable: Codable {
     var rawValue:Int { get }
 }
 
-struct APIError<ServiceError:ServiceErrorable> : Swift.Error {
-    let code   : Code<ServiceError.Code>
-    let status : Int?
-    let message: String?
-    
-    init(code: Code<ServiceError.Code>, status: Int? = nil, message:String? = nil) {
+public struct APIError<ServiceError: ServiceErrorable>: Swift.Error {
+    public let code: Code<ServiceError.Code>
+    public let status: Int?
+    public let message: String?
+
+    public init(code: Code<ServiceError.Code>, status: Int? = nil, message:String? = nil) {
         self.code    = code
         self.status  = status
         self.message = message
     }
     
-    init(data: Data, status: Int? = nil, type:ServiceError.Type) throws {
+    internal init(data: Data, status: Int? = nil, type:ServiceError.Type) throws {
         let service = try JSONDecoder().decode(ServiceError.self, from: data)
         
         self.code = APIError.Code.service(service.code)

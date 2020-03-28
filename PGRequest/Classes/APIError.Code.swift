@@ -14,7 +14,7 @@ extension APIError {
 }
 
 extension APIError.Code {
-    public enum Common : Int, Codable {
+    public enum Common: Int, Codable {
         case http = -9999
         case serviceExternalUnavailable
         case internalServerError
@@ -28,5 +28,5 @@ extension APIError.Code {
     }
 }
 
-struct APIAnonymousError : Error { }
+public struct APIAnonymousError: Error { }
 

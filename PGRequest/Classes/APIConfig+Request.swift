@@ -11,14 +11,13 @@ import RxCocoa
 import Alamofire
 
 extension APIConfig {
-    
-    internal func makeRequest() -> Observable<Self.Response> {
+    public func makeRequest() -> Observable<Self.Response> {
         return Observable<Response>.create { (observer: AnyObserver<Response>) -> Disposable in
             
             APILog("\n\n")
             APILog("<----------- REQUEST ----------->")
             APILog("")
-            APILog("**** fullpath  : \(self.debugFullPath)")
+            APILog("**** fullpath : \(self.debugFullPath)")
             APILog("**** parameter : \(self.parameters?.params ?? [:])")
             APILog("")
             APILog("<------------------------------->")

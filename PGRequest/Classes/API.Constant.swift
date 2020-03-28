@@ -10,38 +10,39 @@ import Foundation
 import UIKit
 
 extension API {
-    struct Constant {
-         static var hidepath:Bool = true
+    public struct Constant {
+         public static var hidepath:Bool = true
     }
 }
 
 extension API.Constant {
-    struct Property {
-        static var bundleName:String        { return Bundle.main.infoDictionary!["CFBundleDisplayName"] as! String }
-        static var bundleVersion:String     { return Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String }
-        static var bundleIdentifier:String  { return Bundle.main.bundleIdentifier! }
-        static var deviceVersion:String     { return UIDevice.current.systemVersion }
-        static var deviceSimpleModel:String { return UIDevice.current.model }
-        static var machineName:String       { return Property.getMachineName() }
-        static var versionCode:Int          { return getVersionCode() }
-        static var deviceIdentifier:String  { return UIDevice.current.uuidString }
+    public struct Property {
+        public static var bundleName:String        { return Bundle.main.infoDictionary!["CFBundleDisplayName"] as! String }
+        public static var bundleVersion:String     { return Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String }
+        public static var bundleIdentifier:String  { return Bundle.main.bundleIdentifier! }
+        public static var deviceVersion:String     { return UIDevice.current.systemVersion }
+        public static var deviceSimpleModel:String { return UIDevice.current.model }
+        public static var machineName:String       { return Property.getMachineName() }
+        public static var versionCode:Int          { return getVersionCode() }
+        public static var deviceIdentifier:String  { return UIDevice.current.uuidString }
     }
 }
 
 extension API.Constant.Property {
-    struct UserDefined {
-        static var serviceDomain:String {
+    public struct UserDefined {
+        public static var serviceDomain:String {
             return Bundle.main.infoDictionary!["SERVICE_DOMAIN"] as! String
         }
     }
 }
 
 extension API.Constant.Property {
-    struct Header {
-        static var userAgent:String  { return "\(bundleName)/\(bundleVersion)(\(versionCode)) iOS/\(deviceVersion)/\(machineName)" }
-        static var deviceInfo:String { return "\(deviceIdentifier) \(deviceSimpleModel.replacingOccurrences(of: " ", with: "_"))" }
-        static var language:String   { return Locale.preferredLanguages.first ?? "ko-KR" }
-        static var timeZone:String   { return TimeZone.current.identifier }
+    public struct Header {
+        public static var userAgent:String  { return "\(bundleName)/\(bundleVersion)(\(versionCode)) iOS/\(deviceVersion)/\(machineName)" }
+        public static var deviceInfo:String { return "\(deviceIdentifier) \(deviceSimpleModel.replacingOccurrences(of: " ", with: "_"))" }
+        public static var language:String   { return Locale.preferredLanguages.first ?? defualtLanguage }
+        public static var timeZone:String   { return TimeZone.current.identifier }
+        public static var defualtLanguage = "ko-KR"
     }
 }
 

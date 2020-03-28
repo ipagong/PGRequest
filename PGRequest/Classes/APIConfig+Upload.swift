@@ -10,39 +10,39 @@ import RxSwift
 import RxCocoa
 import Alamofire
 
-protocol APIUploadConfig : APIConfig {
+public protocol APIUploadConfig: APIConfig {
     var formData: [UploadData] { get }
 }
 
-enum APIUploadStatus<Result> {
+public enum APIUploadStatus<Result> {
     case progress(Progress)
     case complete(Result)
 }
 
-struct UploadData {
-    let data:Data
-    let fileName:String
-    let withName:FileType
-    let mimeType:MimeType
+public struct UploadData {
+    public let data:Data
+    public let fileName:String
+    public let withName:FileType
+    public let mimeType:MimeType
     
-    enum FileType : String {
+    public enum FileType: String {
         case photo = "photo"
     }
     
-    enum MimeType : String {
+    public enum MimeType: String {
         case png = "image/png"
         case jpg = "image/jpeg"
     }
 }
 
 extension APIUploadConfig {
-    func makeRequest() -> Observable<Self.Response> {
+    public func makeRequest() -> Observable<Self.Response> {
         return Observable<Response>.create { (observer: AnyObserver<Response>) -> Disposable in
             
             APILog("\n\n")
             APILog("<----------- UPLOAD ------------>")
             APILog("")
-            APILog("**** fullpath : \(self.debugFullPath)")
+            APILog("**** fullpath: \(self.debugFullPath)")
             APILog("")
             APILog("<------------------------------->")
             APILog("\n")
@@ -63,7 +63,7 @@ extension APIUploadConfig {
 }
 
 extension APIUploadConfig {
-    func multiPartFormData() -> ((MultipartFormData) -> Void) {
+    fileprivate func multiPartFormData() -> ((MultipartFormData) -> Void) {
         return { (form:MultipartFormData) -> Void in
             self.fullParamaters?.forEach{ (key, value) in
                 if let data = (value as? CustomStringConvertible)?.description.data(using: .utf8) {
@@ -80,7 +80,7 @@ extension APIUploadConfig {
 }
 
 extension Data {
-    func uploadData(fileName:String,
+    fileprivate func uploadData(fileName:String,
                     type:UploadData.FileType,
                     mime:UploadData.MimeType) -> UploadData {
         return UploadData.init(data: self,
@@ -91,11 +91,11 @@ extension Data {
 }
 
 extension UIImage {
-    func pngUploadData(_ type: UploadData.FileType) -> UploadData? {
+    public func pngUploadData(_ type: UploadData.FileType) -> UploadData? {
         return self.pngData()?.uploadData(fileName: "photo.png", type: type, mime: .png)
     }
     
-    func jpgUploadData(_ type: UploadData.FileType) -> UploadData? {
+    public func jpgUploadData(_ type: UploadData.FileType) -> UploadData? {
         return self.jpegData(compressionQuality: 1.0)?.uploadData(fileName: "photo.jpeg", type: type, mime: .jpg)
     }
 }

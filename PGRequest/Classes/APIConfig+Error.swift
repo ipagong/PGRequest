@@ -10,7 +10,7 @@ import RxSwift
 import RxCocoa
 import Alamofire
 
-protocol APIConfigWithError : APIConfig {
+public protocol APIConfigWithError: APIConfig {
     associatedtype APISepecifedError: Error
     func catchError(_: APIError<ServiceError>) -> APISepecifedError?
 }
@@ -18,7 +18,7 @@ protocol APIConfigWithError : APIConfig {
 protocol APIErrorIgnorable  { }
 
 extension APIConfigWithError {
-    func requestWithCatch() -> Observable<Swift.Result<Self.Response, Self.APISepecifedError>> {
+    public func requestWithCatch() -> Observable<Swift.Result<Self.Response, Self.APISepecifedError>> {
         return self.makeRequest()
             .map(Swift.Result<Self.Response, Self.APISepecifedError>.success)
             .catchError { (error) -> Observable<Swift.Result<Self.Response, Self.APISepecifedError>> in
@@ -32,7 +32,7 @@ extension APIConfigWithError {
 }
 
 extension Swift.Result {
-    func mapData<V>(_ closure : (Success) -> V) -> Swift.Result<V, Failure> {
+    public func mapData<V>(_ closure: (Success) -> V) -> Swift.Result<V, Failure> {
         switch self {
         case .success(let data):
             return Swift.Result<V, Failure>.success(closure(data))
@@ -41,7 +41,7 @@ extension Swift.Result {
         }
     }
     
-    func mapError<E2>(_ closure : (Failure) -> E2) -> Swift.Result<Success, E2> where E2: Error {
+    public func mapError<E2>(_ closure: (Failure) -> E2) -> Swift.Result<Success, E2> where E2: Error {
         switch self {
         case .success(let data):
             return .success(data)
