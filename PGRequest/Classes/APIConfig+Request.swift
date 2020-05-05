@@ -59,6 +59,13 @@ extension APIConfig {
                     observer.onCompleted()
                     
                 } catch let error {
+                    APILog("\n")
+                    APILog("<----------- Failure Parsing ----------->")
+                    APILog("")
+                    APILog(error.localizedDescription)
+                    APILog("")
+                    APILog("<------------------------------->")
+                    APILog("\n")
                     observer.onError(APIError<ServiceError>.init(code: .common(.inconsistantModelParseFailed),
                                                                  message: error.localizedDescription))
                 }

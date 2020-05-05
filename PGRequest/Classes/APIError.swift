@@ -9,8 +9,9 @@ import Foundation
 
 public protocol ServiceErrorable: Codable {
     associatedtype Code: ServiceErrorCodeRawPresentable
-    var code: Code     { get }
-    var message: String? { get }
+    
+    func getCode() -> Code
+    func getMessage() -> String
     
     static func globalExeception() -> Bool
 }
@@ -33,9 +34,16 @@ public struct APIError<ServiceError: ServiceErrorable>: Swift.Error {
     internal init(data: Data, status: Int? = nil, type:ServiceError.Type) throws {
         let service = try JSONDecoder().decode(ServiceError.self, from: data)
         
-        self.code = APIError.Code.service(service.code)
-        self.message = service.message
+        self.code = APIError.Code.service(service.getCode())
+        self.message = service.getMessage()
         self.status = status
+    }
+    
+    var localizedDescription: String {
+        switch self.code {
+        case .common(let error): return self.message ?? "API ErrorCode: \(error.rawValue)"
+        case .service(let error): return self.message ?? "Service ErrorCode: \(error.rawValue)"
+        }
     }
 }
 
