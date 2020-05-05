@@ -38,10 +38,10 @@ extension API.Constant.Property {
 
 extension API.Constant.Property {
     public struct Header {
-        public static var userAgent:String  { return "\(bundleName)/\(bundleVersion)(\(versionCode)) iOS/\(deviceVersion)/\(machineName)" }
-        public static var deviceInfo:String { return "\(deviceIdentifier) \(deviceSimpleModel.replacingOccurrences(of: " ", with: "_"))" }
-        public static var language:String   { return Locale.preferredLanguages.first ?? defualtLanguage }
-        public static var timeZone:String   { return TimeZone.current.identifier }
+        public static var userAgent: String  { return "\(bundleName)/\(bundleVersion)(\(versionCode)) iOS/\(deviceVersion)/\(machineName)" }
+        public static var deviceInfo: String { return "\(deviceIdentifier) \(deviceSimpleModel.replacingOccurrences(of: " ", with: "_"))" }
+        public static var language: String   { return Locale.preferredLanguages.first ?? defualtLanguage }
+        public static var timeZone: String   { return TimeZone.current.identifier }
         public static var defualtLanguage = "ko-KR"
     }
 }

@@ -13,7 +13,12 @@ public protocol ServiceErrorable: Codable {
     func getCode() -> Code
     func getMessage() -> String
     
+    static func getKeyDecodingStrategy() -> JSONDecoder.KeyDecodingStrategy
     static func globalExeception() -> Bool
+}
+
+extension ServiceErrorable {
+    static func getKeyDecodingStrategy() -> JSONDecoder.KeyDecodingStrategy { .useDefaultKeys }
 }
 
 public protocol ServiceErrorCodeRawPresentable: Codable {
@@ -32,7 +37,9 @@ public struct APIError<ServiceError: ServiceErrorable>: Swift.Error {
     }
     
     internal init(data: Data, status: Int? = nil, type:ServiceError.Type) throws {
-        let service = try JSONDecoder().decode(ServiceError.self, from: data)
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = ServiceError.getKeyDecodingStrategy()
+        let service = try decoder.decode(ServiceError.self, from: data)
         
         self.code = APIError.Code.service(service.getCode())
         self.message = service.getMessage()
