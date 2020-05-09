@@ -18,7 +18,7 @@ public protocol ServiceErrorable: Codable {
 }
 
 extension ServiceErrorable {
-    static func getKeyDecodingStrategy() -> JSONDecoder.KeyDecodingStrategy { .useDefaultKeys }
+    public static func getKeyDecodingStrategy() -> JSONDecoder.KeyDecodingStrategy { .useDefaultKeys }
 }
 
 public protocol ServiceErrorCodeRawPresentable: Codable {

@@ -53,7 +53,7 @@ extension APIConfig {
             })
     }
     
-    var debuggable: Bool { true }
+    public var debuggable: Bool { true }
 }
 
 extension APIConfig {
