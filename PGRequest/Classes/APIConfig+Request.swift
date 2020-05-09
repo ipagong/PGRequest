@@ -44,7 +44,7 @@ extension APIConfig {
             switch response.result {
             case .success(let data):
                 do {
-                    if let description = String(data: data, encoding: .utf8) {
+                    if self.debuggable == true, let description = String(data: data, encoding: .utf8) {
                         APILog("\n\n")
                         APILog("<----------- Response : \(String(describing: Self.Response.self)) ----------->")
                         APILog("")

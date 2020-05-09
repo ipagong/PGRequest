@@ -26,6 +26,8 @@ public protocol APIConfig {
     
     func parse(_: Data) throws -> Response
     func makeRequest() -> Observable<Self.Response>
+    
+    var debuggable: Bool { get }
 }
 
 public protocol DomainConfig {
@@ -50,6 +52,8 @@ extension APIConfig {
                 #endif
             })
     }
+    
+    var debuggable: Bool { true }
 }
 
 extension APIConfig {
