@@ -129,7 +129,9 @@ extension Observable {
                 APILog("***** success: [\(target.method)] \(target.path)")
                 APILog("***** header: \(target.fullHeaders)")
                 APILog("***** parameter: \(String(describing: target.fullParamaters))")
-                APILog("***** data: \(data)")
+                if target.debuggable == true {
+                    APILog("***** data: \(data)")
+                }
                 APILog("")
                 APILog("<------------------------------->")
                 APILog("\n")
