@@ -62,7 +62,7 @@ extension APIConfig {
                     APILog("\n")
                     APILog("<----------- Failure Parsing ----------->")
                     APILog("")
-                    APILog(error.localizedDescription)
+                    APILog(error)
                     APILog("")
                     APILog("<------------------------------->")
                     APILog("\n")

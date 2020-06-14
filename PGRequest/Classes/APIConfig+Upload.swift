@@ -11,7 +11,7 @@ import RxCocoa
 import Alamofire
 
 public protocol APIUploadConfig: APIConfig {
-    var formData: [UploadData] { get }
+    var formData: [UploadDatable] { get }
 }
 
 public enum APIUploadStatus<Result> {
@@ -19,19 +19,31 @@ public enum APIUploadStatus<Result> {
     case complete(Result)
 }
 
-public struct UploadData {
+public protocol UploadDatable {
+    var data: Data { get }
+    var fileName: String { get }
+    var withName: String { get }
+    var mime: String { get }
+}
+
+public struct DefaultUploadData: UploadDatable {
     public let data:Data
     public let fileName:String
-    public let withName:FileType
+    public let withName:String
     public let mimeType:MimeType
     
-    public enum FileType: String {
-        case photo = "photo"
-    }
+    public var mime: String { self.mimeType.rawValue }
     
     public enum MimeType: String {
         case png = "image/png"
         case jpg = "image/jpeg"
+    }
+    
+    public init(data:Data, fileName:String, withName:String, mimeType:MimeType) {
+        self.data = data
+        self.fileName = fileName
+        self.withName = withName
+        self.mimeType = mimeType
     }
 }
 
@@ -70,32 +82,10 @@ extension APIUploadConfig {
                     form.append(data, withName: key)
                 }
             }
-            
             self.formData.forEach{ form.append($0.data,
-                                               withName: $0.withName.rawValue,
+                                               withName: $0.withName,
                                                fileName: $0.fileName,
-                                               mimeType: $0.mimeType.rawValue) }
+                                               mimeType: $0.mime) }
         }
-    }
-}
-
-extension Data {
-    fileprivate func uploadData(fileName:String,
-                    type:UploadData.FileType,
-                    mime:UploadData.MimeType) -> UploadData {
-        return UploadData.init(data: self,
-                               fileName: fileName,
-                               withName: type,
-                               mimeType: mime)
-    }
-}
-
-extension UIImage {
-    public func pngUploadData(_ type: UploadData.FileType) -> UploadData? {
-        return self.pngData()?.uploadData(fileName: "photo.png", type: type, mime: .png)
-    }
-    
-    public func jpgUploadData(_ type: UploadData.FileType) -> UploadData? {
-        return self.jpegData(compressionQuality: 1.0)?.uploadData(fileName: "photo.jpeg", type: type, mime: .jpg)
     }
 }
