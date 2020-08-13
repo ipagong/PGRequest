@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'PGRequest'
-  s.version          = '0.7.6'
+  s.version          = '0.7.7'
   s.summary          = 'API Protocols'
   s.description      = "API Protocols for Alamofire and RxSwift"
 
