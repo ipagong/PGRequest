@@ -15,7 +15,7 @@ public protocol APIConfigWithError: APIConfig {
     func catchError(_: APIError<ServiceError>) -> APISepecifedError?
 }
 
-protocol APIErrorIgnorable  { }
+public protocol APIErrorIgnorable  { }
 
 extension APIConfigWithError {
     public func requestWithCatch() -> Observable<Swift.Result<Self.Response, Self.APISepecifedError>> {

@@ -120,7 +120,7 @@ extension APIConfig {
 }
 
 extension Observable {
-    internal func globalException<T: APIConfig>(_ target:T) -> Observable {
+    public func globalException<T: APIConfig>(_ target:T) -> Observable {
         return self
             .do(onNext: { (data) in
                 APILog("\n\n")
