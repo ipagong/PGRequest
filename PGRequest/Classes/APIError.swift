@@ -14,7 +14,7 @@ public protocol ServiceErrorable: Codable {
     func getMessage() -> String
     
     static func getKeyDecodingStrategy() -> JSONDecoder.KeyDecodingStrategy
-    static func globalExeception() -> Bool
+    static func globalExeception(with error: APIError<Self>) -> Bool
 }
 
 extension ServiceErrorable {

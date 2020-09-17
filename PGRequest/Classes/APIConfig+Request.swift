@@ -151,7 +151,7 @@ extension Observable {
             .catchError { (error) -> Observable<Element> in
                 guard let apiError = error as? APIError<T.ServiceError> else { throw error }
                 
-                if T.serviceError.globalExeception() == true {
+                if T.serviceError.globalExeception(with: apiError) == true {
                     throw APIError<T.ServiceError>.init(code: .common(.globalException),
                                                          status: apiError.status,
                                                          message: apiError.message)
