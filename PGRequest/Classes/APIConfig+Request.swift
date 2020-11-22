@@ -110,7 +110,7 @@ extension APIConfig {
             return APIError.init(code: .common(.internalServerError), status: status, message: afError.localizedDescription)
         default:
             guard let data = response.data, let error = try? APIError.init(data: data, status: status, type: Self.serviceError.self) else {
-                return APIError.init(code: .common(.http), status: nil, message: afError.localizedDescription)
+                return APIError.init(code: .common(.http), status: status, message: afError.localizedDescription)
             }
             
             return error
@@ -151,13 +151,9 @@ extension Observable {
             .catchError { (error) -> Observable<Element> in
                 guard let apiError = error as? APIError<T.ServiceError> else { throw error }
                 
-                if T.serviceError.globalExeception(with: apiError) == true {
-                    throw APIError<T.ServiceError>.init(code: .common(.globalException),
-                                                         status: apiError.status,
-                                                         message: apiError.message)
-                } else {
-                    throw apiError
-                }
+                if T.serviceError.globalExeception(with: apiError) == true { return .empty() }
+                
+                throw apiError                
             }
     }
 }
