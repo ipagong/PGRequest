@@ -77,9 +77,8 @@ extension APIConfig {
     }
     
     private func failHandler(error:Error, response:AFDataResponse<Data>) -> APIError<ServiceError> {
-        guard error.isCanceled == false else {
-            return APIError.init(code: .common(.opertaionCanceled))
-        }
+        if error.isCanceled == true { return APIError.init(code: .common(.opertaionCanceled)) }
+        if error.isNetworkError == true { return APIError.init(code: .common(.networkError)) }
         
         guard let afError = error as? AFError else {
             APILog("\n\n")
@@ -159,7 +158,20 @@ extension Observable {
 }
 
 extension Error {
-    fileprivate var isCanceled:Bool {
-        return (self as NSError).domain == NSURLErrorDomain && (self as NSError).code == NSURLErrorCancelled
+    var asNSError: NSError { self as NSError }
+    
+    var isCanceled:Bool {
+        return self.asNSError.domain == NSURLErrorDomain && self.asNSError.code == NSURLErrorCancelled
+    }
+    
+    var isNetworkError: Bool {
+        if self.asAFError?.isSessionTaskError == true { return true }
+        
+        switch self.asNSError.code {
+            case NSURLErrorNetworkConnectionLost: return true
+            case NSURLErrorTimedOut: return true
+            case NSURLErrorNetworkConnectionLost: return true
+            default: return false
+        }
     }
 }
